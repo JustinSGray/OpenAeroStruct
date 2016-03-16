@@ -72,6 +72,11 @@ coupled.nl_solver.line_search.options['iprint'] = 1
 # coupled.weissinger.ln_solver = LinearGaussSeidel()
 # coupled.spatialbeam.ln_solver = LinearGaussSeidel()
 
+# coupled.nl_solver = NLGaussSeidel()   ### Comment this out to use Newton
+# coupled.nl_solver.options['iprint'] = 1
+# coupled.nl_solver.options['atol'] = 1e-12
+# coupled.nl_solver.options['rtol'] = 1e-12
+
 
 root.add('coupled',
          coupled,
@@ -85,9 +90,5 @@ st = time.time()
 prob.run_once()
 
 print "runtime: ", time.time()-st
-
-print "asmb: ", prob.root.coupled.ln_solver.timer['assembly']
-print "lu: ", prob.root.coupled.ln_solver.timer['lu']
-print "solve: ", prob.root.coupled.ln_solver.timer['solve']
 
 print prob['sec_forces']

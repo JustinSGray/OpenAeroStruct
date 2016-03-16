@@ -15,12 +15,6 @@ class LUSolver(ScipyGMRES):
     def __init__(self): 
         super(LUSolver, self).__init__()
 
-        timer = {}
-        timer['assembly'] = 0
-        timer['lu'] = 0
-        timer['solve'] = 0
-        self.timer = timer 
-
     def setup(self, sub): 
 
         self.u_vec = sub.unknowns
@@ -41,8 +35,6 @@ class LUSolver(ScipyGMRES):
         sol_buf = OrderedDict()
         self.lup = dict()
 
-        timer = self.timer
-
         for voi, rhs in rhs_mat.items():
             self.voi = None
 
@@ -52,7 +44,6 @@ class LUSolver(ScipyGMRES):
 
             if system.regen_lu: 
                 
-                st = time.time()
                 for out_var in self.var_names: 
                     owner = self.var_owners[out_var]
                     jac = owner._jacobian_cache
@@ -65,16 +56,11 @@ class LUSolver(ScipyGMRES):
 
                         except KeyError: 
                             pass # that deriv doesn't exist
-                timer['assembly'] += time.time()-st
 
-                st = time.time()
                 self.lup[voi] = lu_factor(self.jacobian)
-                timer['lu'] += time.time()-st
 
-            st = time.time()
             # don't need to explicitly handle transpose, because mode takes care of it in mult            
             sol_buf[voi] = lu_solve(self.lup[voi], rhs) 
-            timer['solve'] += time.time()-st
 
         system.regen_lu = False
         return sol_buf
