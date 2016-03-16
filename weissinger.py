@@ -265,7 +265,7 @@ class WeissingerForces(Component):
     def linearize(self, params, unknowns, resids):
         """ Jacobian for lift."""
 
-        J = self.J
+        J = {}
         arange = self.arange
 
         circ = params['circulations']

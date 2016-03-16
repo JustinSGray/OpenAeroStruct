@@ -53,12 +53,12 @@ class LUSolver(ScipyGMRES):
             n_edge = u_vec.vec.size
             if system.regen_lu: 
                 
-                st = time.time()
-                ident = np.eye(n_edge)
-                partials = np.empty((n_edge, n_edge))
-                for i in range(n_edge):
-                    partials[:, i] = self.mult(ident[:, i])
-                timer['assembly'] += time.time()-st
+                # st = time.time()
+                # ident = np.eye(n_edge)
+                # partials = np.empty((n_edge, n_edge))
+                # for i in range(n_edge):
+                #     partials[:, i] = self.mult(ident[:, i])
+                # timer['assembly'] += time.time()-st
                 
                 st = time.time()
                 for out_var in self.var_names: 
@@ -82,8 +82,8 @@ class LUSolver(ScipyGMRES):
                 timer['assembly'] += time.time()-st
 
                 st = time.time()
-                self.lup[voi] = lu_factor(partials)
-                # self.lup[voi] = lu_factor(self.jacobian)
+                # self.lup[voi] = lu_factor(partials)
+                self.lup[voi] = lu_factor(self.jacobian)
                 timer['lu'] += time.time()-st
 
             st = time.time()
