@@ -2,7 +2,7 @@ from __future__ import division
 import numpy
 import sys
 
-from openmdao.api import IndepVarComp, Problem, Group, ScipyOptimizer, Newton, ScipyGMRES, LinearGaussSeidel
+from openmdao.api import IndepVarComp, Problem, Group, ScipyOptimizer, Newton, ScipyGMRES, LinearGaussSeidel, NLGaussSeidel
 from geometry import GeometryMesh
 from transfer import TransferDisplacements, TransferLoads
 from weissinger import WeissingerGroup
@@ -11,8 +11,8 @@ from spatialbeam import SpatialBeamGroup
 from lu_group import LUGroup
 
 num_y = 3
-span = 232.02
-chord = 39.37
+span = 60
+chord = 4
 cons = numpy.array([int((num_y-1)/2)])
 
 v = 200.
@@ -22,7 +22,7 @@ rho = 1.225
 E = 200.e9
 G = 30.e9
 r = 0.3 * numpy.ones(num_y-1)
-t = 0.02 * numpy.ones(num_y-1)
+t = 0.05 * numpy.ones(num_y-1)
 
 root = Group()
 
@@ -70,6 +70,12 @@ coupled.nl_solver.line_search.options['iprint'] = 1
 # coupled.ln_solver.preconditioner = LinearGaussSeidel()
 # coupled.weissinger.ln_solver = LinearGaussSeidel()
 # coupled.spatialbeam.ln_solver = LinearGaussSeidel()
+
+
+coupled.nl_solver = NLGaussSeidel()   ### Comment this out to use Newton
+coupled.nl_solver.options['iprint'] = 1
+coupled.nl_solver.options['atol'] = 1e-12
+coupled.nl_solver.options['rtol'] = 1e-12
 
 root.add('coupled',
          coupled,
