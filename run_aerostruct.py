@@ -66,7 +66,7 @@ coupled.nl_solver.options['iprint'] = 1
 coupled.nl_solver.line_search.options['iprint'] = 1
 
 # coupled.ln_solver = ScipyGMRES()
-coupled.ln_solver.options['iprint'] = 1
+# coupled.ln_solver.options['iprint'] = 1
 # coupled.ln_solver.preconditioner = LinearGaussSeidel()
 # coupled.weissinger.ln_solver = LinearGaussSeidel()
 # coupled.spatialbeam.ln_solver = LinearGaussSeidel()
