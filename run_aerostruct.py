@@ -8,6 +8,7 @@ from transfer import TransferDisplacements, TransferLoads
 from weissinger import WeissingerGroup
 from spatialbeam import SpatialBeamGroup
 
+from lu_group import LUGroup
 
 num_y = 3
 span = 232.02
@@ -44,7 +45,7 @@ root.add('t',
          IndepVarComp('t', t),
          promotes=['*'])
 
-coupled = Group()
+coupled = LUGroup()
 coupled.add('mesh',
             GeometryMesh(num_y, span, chord),
             promotes=['*'])
@@ -62,11 +63,13 @@ coupled.add('spatialbeam',
             promotes=['*'])
 coupled.nl_solver = Newton()
 coupled.nl_solver.options['iprint'] = 1
-coupled.ln_solver = ScipyGMRES()
+coupled.nl_solver.line_search.options['iprint'] = 1
+
+# coupled.ln_solver = ScipyGMRES()
 coupled.ln_solver.options['iprint'] = 1
-coupled.ln_solver.preconditioner = LinearGaussSeidel()
-coupled.weissinger.ln_solver = LinearGaussSeidel()
-coupled.spatialbeam.ln_solver = LinearGaussSeidel()
+# coupled.ln_solver.preconditioner = LinearGaussSeidel()
+# coupled.weissinger.ln_solver = LinearGaussSeidel()
+# coupled.spatialbeam.ln_solver = LinearGaussSeidel()
 
 root.add('coupled',
          coupled,
