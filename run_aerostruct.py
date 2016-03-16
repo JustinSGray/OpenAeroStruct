@@ -83,8 +83,11 @@ prob.root = root
 prob.setup()
 st = time.time()
 prob.run_once()
+
 print "runtime: ", time.time()-st
 
 print "asmb: ", prob.root.coupled.ln_solver.timer['assembly']
 print "lu: ", prob.root.coupled.ln_solver.timer['lu']
 print "solve: ", prob.root.coupled.ln_solver.timer['solve']
+
+print prob['sec_forces']

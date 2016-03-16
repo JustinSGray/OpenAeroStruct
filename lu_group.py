@@ -50,15 +50,7 @@ class LUSolver(ScipyGMRES):
 
             u_vec = self.u_vec
 
-            n_edge = u_vec.vec.size
             if system.regen_lu: 
-                
-                # st = time.time()
-                # ident = np.eye(n_edge)
-                # partials = np.empty((n_edge, n_edge))
-                # for i in range(n_edge):
-                #     partials[:, i] = self.mult(ident[:, i])
-                # timer['assembly'] += time.time()-st
                 
                 st = time.time()
                 for out_var in self.var_names: 
@@ -71,18 +63,11 @@ class LUSolver(ScipyGMRES):
                         try: 
                             self.jacobian[o_start:o_end, i_start:i_end] = jac[out_var, in_var]
 
-                            # print out_var, in_var
-                            # print self.jacobian[o_start:o_end, i_start:i_end]
-                            # print partials[o_start:o_end, i_start:i_end]
-                            # print 
-                            # print 
-                            # raw_input()
                         except KeyError: 
                             pass # that deriv doesn't exist
                 timer['assembly'] += time.time()-st
 
                 st = time.time()
-                # self.lup[voi] = lu_factor(partials)
                 self.lup[voi] = lu_factor(self.jacobian)
                 timer['lu'] += time.time()-st
 
