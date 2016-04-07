@@ -11,7 +11,6 @@ from spatialbeam import SpatialBeamStates, SpatialBeamFunctionals, radii
 from materials import MaterialsTube
 from functionals import FunctionalBreguetRange, FunctionalEquilibrium
 
-from model_helpers import view_tree
 from gs_newton import HybridGSNewton
 
 # Create the mesh with 2 inboard points and 3 outboard points
@@ -123,7 +122,10 @@ prob.driver.add_constraint('eq_con', equals=0.0)
 prob.driver.add_recorder(SqliteRecorder('aerostruct.db'))
 
 prob.setup()
+
+from openmdao.devtools.d3graph import view_tree
 view_tree(prob, outfile="aerostruct.html", show_browser=False)
+exit()
 
 if len(sys.argv) == 1:
     st = time.time()
